@@ -1,0 +1,58 @@
+{% extends 'example/base.html' %}
+
+{% block content %}
+<center>
+  <hr>
+  <a style="float: right;" href="{% url 'example:log_out' %}">Log out</a>
+  <hr>
+  <br>
+  <div>
+  <table  border="2">
+<tbody>
+<tr>
+<td><span style="color: #ff0000;">username</span></td>
+<td><span style="color: #ff0000;">user status</span></td>
+</tr>
+<tr></tr>
+{% for user in users %}
+<tr>
+    <br>
+    <td>{{ user.username|escape }}:</td><td> {{ user.status|default:'Offline' }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+  </div>
+  <p>create chat room for chat : <a href="{% url 'chat:index' %}">create room</a></p>
+</center>
+{% endblock content %}
+
+{% block script %}
+  <script>
+    var socket = new WebSocket('ws://' + window.location.host + '/users/');
+
+    socket.onopen = function open() {
+      console.log('WebSockets connection created.');
+    };
+
+    socket.onmessage = function message(event) {
+      var data = JSON.parse(event.data);
+      // NOTE: We escape JavaScript to prevent XSS attacks.
+      var username = encodeURI(data['username']);
+      var user = $('li').filter(function () {
+        return $(this).data('username') == username;
+      });
+
+      if (data['is_logged_in']) {
+        user.html(username + ': Online');
+      }
+      else {
+        user.html(username + ': Offline');
+      }
+    };
+
+    if (socket.readyState == WebSocket.OPEN) {
+      socket.onopen();
+    }
+  </script>
+{% endblock script %} %}

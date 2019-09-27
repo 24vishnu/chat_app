@@ -1,0 +1,50 @@
+{% extends 'example/base.html' %}
+
+{% block content %}
+{% csrf_token %}
+
+	<head>
+		<title> home </title>
+		<style>
+			.outerDiv
+			{
+				background-color: #006699;
+				width: 600px;
+				margin: 0px auto;
+				padding: 1px;
+			}
+			.leftDiv
+			{
+				background-color: #efefef;
+				width: 30%;
+				float: left;
+			}
+			.rightDiv
+			{
+				background-color: #efefef;
+				width: 30%;
+				float: right;
+			}
+
+		</style>
+	</head>
+<hr>
+	<body style="text-align: center;">
+	<h1><font color="blue">This is chat app home page</font></h1>
+	<hr>
+        <div class="outerDiv">
+			<div class="leftDiv">
+				<a href="{% url 'chat:home' %}">home</a>
+			</div>
+			<div class="rightDiv">
+				<a href="{% url 'example:log_in' %}">Login</a>
+			</div>
+			<div style="background-color: #efefef;">
+				<a href="http://localhost:8000/admin/">admin</a>
+			</div>
+        </div>
+	<hr>
+    <a href="{% url 'example:sign_up' %}">Sign up!</a>
+    </body>
+
+{% endblock content %}

@@ -1,0 +1,11 @@
+{% extends 'example/base.html' %}
+
+{% block content %}
+<h2> Thank you for your email confirmation. Now you can login your account.</h2>
+<br>
+<p> Go to home page : </p>
+<a href="{% url 'chat:home' %}">home</a>
+<center>
+		please click for login your account		<a href="{% url 'example:log_in' %}">Login</a>
+</center>
+{% endblock %}

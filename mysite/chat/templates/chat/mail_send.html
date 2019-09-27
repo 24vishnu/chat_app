@@ -1,0 +1,9 @@
+{% extends 'example/base.html' %}
+
+{% block content %}
+<h2>Please active your account before login</h2>
+<br>
+<p> Go to home page : </p>
+<a href="{% url 'chat:home' %}">home</a>
+
+{% endblock %}

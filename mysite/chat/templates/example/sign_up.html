@@ -1,0 +1,26 @@
+{% extends 'example/base.html' %}
+
+{% block content %}
+
+  <form action="{% url 'example:sign_up' %}" method="post">
+    <center>
+      <h3> This is sign up user page </h3>
+    {% csrf_token %}
+      <table style="width:500px" >
+    {% for field in form %}
+        <tr style="height:40px">
+          <td>
+        {{ field.label_tag }}</td>
+          <td>
+        {{ field }}
+          </td>
+      </tr>
+    {% endfor %}
+        </table>
+      <br>
+    <button type="submit">Sign up</button>
+    </center>
+    <hr>
+    <p>Already have an account? <a href="{% url 'example:log_in' %}">Log in!</a></p>
+  </form>
+{% endblock content %}

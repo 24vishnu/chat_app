@@ -1,0 +1,16 @@
+{% extends 'example/base.html' %}
+{% block title%} send mail {% endblock %}
+
+{% block content %}
+
+    <center>
+        <hr>
+        <p>Please check your email and click on link and reset password. </p>
+        {% csrf_token %}
+        <br>
+
+        <p>Go to mail account <a href="https://www.google.com/gmail/">Gmail</a></p>
+    </center>
+
+
+{% endblock %}

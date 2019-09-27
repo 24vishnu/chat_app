@@ -1,0 +1,18 @@
+{% extends 'example/base.html' %}
+
+{% block content %}
+<center>
+  <h2> This is login page </h2>
+  <form action="{% url 'example:log_in' %}" method="post">
+    {% csrf_token %}
+    <br>
+        Enter username <input type="text" name="username" required><br>
+    <br>
+        Enter Password <input type="password" name="password" required><br>
+    <br>
+    <button type="submit">Login</button>
+    <p>Forgot Password <a href="{% url 'example:reset_password' %}">Reset password</a></p>
+  </form>
+  <p>Don't have an account? <a href="{% url 'example:sign_up' %}">Sign up!</a></p>
+  </center>
+{% endblock content %}

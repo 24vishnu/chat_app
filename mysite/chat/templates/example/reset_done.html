@@ -1,0 +1,24 @@
+{% extends 'example/base.html' %}
+{% block title%} Forgot your password {% endblock %}
+
+{% block content %}
+<style>
+            .head1 {
+                font-size:40px;
+                color:green;
+                font-weight:bold;
+                text-align:center;
+            }
+            .head2 {
+                font-size:17px;
+                text-align:center;
+                margin-bottom:20px;
+            }
+</style>
+
+    <center>
+         <div class = "head1">Thanks your password updated</div>
+        <br>
+        click here for login now <a href="{% url 'example:log_in' %}"> login</a>
+    </center>
+{% endblock %}
