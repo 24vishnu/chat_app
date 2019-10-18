@@ -16,20 +16,25 @@
 			.leftDiv
 			{
 				background-color: #efefef;
-				width: 30%;
+				width: 33%;
 				float: left;
 			}
 			.rightDiv
 			{
 				background-color: #efefef;
-				width: 30%;
+				width: 33%;
 				float: right;
 			}
+			.body
+			{
 
+ 			background-color: #cccccc;
+ 			text-align: center;
+			}
 		</style>
 	</head>
 <hr>
-	<body style="text-align: center;">
+	<body class="body">
 	<h1><font color="blue">This is chat app home page</font></h1>
 	<hr>
         <div class="outerDiv">
@@ -41,10 +46,11 @@
 			</div>
 			<div style="background-color: #efefef;">
 				<a href="http://localhost:8000/admin/">admin</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="{% url 'example:sign_up' %}">Sign up!</a>
 			</div>
         </div>
-	<hr>
-    <a href="{% url 'example:sign_up' %}">Sign up!</a>
     </body>
 
 {% endblock content %}

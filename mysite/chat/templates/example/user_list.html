@@ -1,34 +1,103 @@
 {% extends 'example/base.html' %}
 
 {% block content %}
+<div style="background-color: darkkhaki;height: 400px;">
 <center>
   <hr>
-  <a style="float: right;" href="{% url 'example:log_out' %}">Log out</a>
+    <a href="{% url 'example:log_out' %}"><p align="right"> Log out </p></a>
   <hr>
-  <br>
-  <div>
-  <table  border="2">
+    <h1>Hi..  {{ user.username }}</h1>
+</center>
+<table  border="2" align="left">
 <tbody>
 <tr>
-<td><span style="color: #ff0000;">username</span></td>
-<td><span style="color: #ff0000;">user status</span></td>
+<td align="center"><span style="color: #ff0000;">username</span></td>
+<td align="center"><span style="color: #ff0000;">user status</span></td>
 </tr>
 <tr></tr>
-{% for user in users %}
+{% for uname in users %}
 <tr>
-    <br>
-    <td>{{ user.username|escape }}:</td><td> {{ user.status|default:'Offline' }}</td>
+    {% if uname == username %}
+    <td width="100px" style="color:green;" align="center" class="abc"> {{ uname.username|default:'None' }}*</td><td width="100px" style="color:green;" align="center"> {{ uname.status|default:'Offline' }}</td>
+    {% else %}
+    <td width="100px"> <input id="{{ uname }}" type="button" class="{{ uname }}" value="{{ uname }}" style="width: 10em;"></td><td width="100px" align="center"> {{ uname.status|default:'Offline' }}</td>
+  {% endif %}
+    <script>
+        document.querySelector('#{{ uname }}').onclick = function (e) {
+                var uname=(document.querySelector('#{{ uname }}').className);
+                var roomname= (uname+ "{{ user.username }}");
+                var strroom = roomname.toString();
+                var z= strroom.split("").sort();
+                var dom='';
+                for (i=0;i<z.length;i++){
+                    dom=dom+z[i];
+                }
+                window.location.pathname = '/chat/' + dom + '/';
+            };
+    </script>
 </tr>
 {% endfor %}
 </tbody>
 </table>
-  </div>
-  <p>create chat room for chat : <a href="{% url 'chat:index' %}">create room</a></p>
+<center>
+<div style="background-color: greenyellow; width: 400px; height: 100px;">
+         What chat room would you like to enter?<br/>
+    <input id="room-name-input" type="text" placeholder="Enter a room name"><br/>
+    <input id="room-name-submit" type="button" value="Enter">
+</div>
+    <div>
+        <table  border="2" align="right">
+        <tbody>
+        <tr>
+        <td align="center"><span style="color: #ff0000;">Rooms</span></td>
+        </tr>
+        <tr></tr>
+        {% for room in rooms %}
+        <tr>
+<!--            <td width="100px" align="center" > {{ room }}</td>-->
+            <td width="100px"> <input id="{{ room }}" type="button" class="{{ room }}" value="{{ room }}" style="width: 10em;"></td>
+            <script>
+             document.querySelector('#{{ room }}').onclick = function (e) {
+                var pre_room=(document.querySelector('#{{ room }}').className);
+
+                window.location.pathname = '/chat/' + pre_room + '/';
+            };
+            </script>
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
 </center>
+</div>
+
 {% endblock content %}
 
 {% block script %}
   <script>
+
+    //============================
+            document.querySelector('#room-name-input').focus();
+        document.querySelector('#room-name-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {
+                document.querySelector('#room-name-submit').click();
+            }
+        };
+
+        document.querySelector('#room-name-submit').onclick = function(e) {
+            var roomName = document.querySelector('#room-name-input').value;
+            window.location.pathname = '/chat/' + roomName + '/';
+        };
+
+        //-------------------------------------------
+        document.querySelector('.abc').onclick = function (e) {
+            alert("You can not chat with yourself. please chose different online user!")
+            };
+        //-------------------------------------------
+
+           //==============================
+
+  var user = '{{ username }}';
     var socket = new WebSocket('ws://' + window.location.host + '/users/');
 
     socket.onopen = function open() {

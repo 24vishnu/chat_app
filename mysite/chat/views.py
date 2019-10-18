@@ -4,7 +4,7 @@ import jwt
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm, SetPasswordForm
+from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.http import HttpResponse
@@ -13,6 +13,7 @@ from django.utils.safestring import mark_safe
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import SignupForm
+from .models import ChatRoom, LoggedInUser
 
 User = get_user_model()
 
@@ -42,7 +43,14 @@ def user_list(request):
     # set user status
     for user in users:
         user.status = 'Online' if hasattr(user, 'logged_in_user') else 'Off-line'
-    return render(request, 'example/user_list.html', {'users': users})
+    username = request.user
+    mess = ChatRoom.objects.all()  # new
+    rrr = []
+    for i in range(len(mess.values())):
+        if mess.values()[i]["room_name"] not in rrr:
+            rrr.append(mess.values()[i]["room_name"])
+    print(rrr)
+    return render(request, 'example/user_list.html', {'users': users, 'username': username, 'rooms': rrr})
 
 
 """
@@ -100,20 +108,30 @@ def log_out(request):
 
 
 # following method is use for create a chat room by any register and logged in user
-@login_required
+@login_required(login_url='/login')
 def create_Chat_Room(request):
     return render(request, 'chat/index.html', {})
 
 
 # this method use for communication in a created chat room after creating it
-@login_required
+@login_required(login_url='/')
 def chat_room(request, room_name):
     users = User.objects.select_related('logged_in_user')
+
+    username = request.user
 
     for user in users:
         user.status = 'Online' if hasattr(user, 'logged_in_user') else 'off-line'
 
-    return render(request, 'chat/room.html', {"room_name_json": mark_safe(json.dumps(room_name)), 'users': users})
+    loggedusers = LoggedInUser.objects.all()        # new
+    messages = ChatRoom.objects.filter(room_name=room_name).values('message')       # new
+
+
+    message = list(messages)        # new
+
+    return render(request, 'chat/room.html',
+                  {"room_name_json": room_name, 'online user': loggedusers,
+                   'message': mark_safe(json.dumps(message)), 'users': users, 'username': username})
 
 
 """
@@ -207,7 +225,7 @@ def new_password(request, userReset):
         password2 = request.POST['password2']
 
         if password1 != password2 or password2 == "" or password1 == "":
-            messages.info(request,"password does not match ")
+            messages.info(request, "password does not match ")
             return render(request, 'example/confirm_password.html')
         else:
             try:

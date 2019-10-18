@@ -1,14 +1,18 @@
 {% extends 'example/base.html' %}
 
 {% block content %}
-<center>
+<center style="
+    width: 550px;
+    height: 250px;
+    background-color: moccasin;
+">
   <h2> This is login page </h2>
   <form action="{% url 'example:log_in' %}" method="post">
     {% csrf_token %}
     <br>
-        Enter username <input type="text" name="username" required><br>
+        Enter username <input type="text" placeholder="username" name="username" required><br>
     <br>
-        Enter Password <input type="password" name="password" required><br>
+        Enter Password <input type="password" placeholder="password" name="password" required><br>
     <br>
     <button type="submit">Login</button>
     <p>Forgot Password <a href="{% url 'example:reset_password' %}">Reset password</a></p>

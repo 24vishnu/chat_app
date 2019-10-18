@@ -1,40 +1,54 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Chat Room</title>
-</head>
-<body bgcolor="">
+{% extends 'example/base.html' %}
+
+{% block content %}
+<div style="background-color:darkkhaki">
+<a href="{% url 'example:log_out' %}"><p style="text-align: right;">Log out</p></a>
+<hr>
+  <h2 style="float: right;" > Group Name : <u style="color: green"> {{ room_name_json }}</u>
+  <br>
+ Current user : <u style="color: green"> {{ username }}</u></h2>
+
+
 <table  border="2">
 <tbody>
 <tr>
 <td><span style="color: #ff0000;">username</span></td>
+
 <td><span style="color: #ff0000;">user status</span></td>
 </tr>
 <tr></tr>
 {% for user in users %}
+{% if user.status == 'Online' %}
 <tr>
     <br>
-    <td>{{ user.username|escape }}:</td><td> {{ user.status|default:'Offline' }}</td>
+    <td>{{ user.username|escape }}  </td><td> {{ user.status|default:'Offline' }}</td>
+
 </tr>
+{% endif %}
 {% endfor %}
 </tbody>
 </table>
-<p>&nbsp;</p>
 
+    <p>&nbsp;</p>
+<hr>
 <center>
-    <textarea id="chat-log" cols="100" rows="20" style="background-color: #a39c9f;"></textarea><br/>
+    <textarea id="chat-log" cols="100" rows="20" disabled="disabled" style="background-color: #a39c9f;"></textarea><br/>
     <input id="chat-message-input" type="text" size="100" style="background-color:  #e33785;"/><br/>
     <input id="chat-message-submit" type="button" value="Send"/>
 </center>
-</body>
+</div>
+<!--</body>-->
 <script>
-    var roomName = {{ room_name_json }};
+    var roomName = '{{ room_name_json }}';
+    var user= '{{username}}';
+    var messages ={{ message }};
     var chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + roomName + '/');
 
-
-    chatSocket.onopen = function open() {
-      console.log('WebSockets connection created.');
+    chatSocket.onopen=function(){
+        for (i=0;i<messages.length;i++){
+            var m =messages[i].message;
+            document.querySelector('#chat-log').value += (m+ '\n');
+        }
     };
 
 
@@ -58,7 +72,8 @@
     document.querySelector('#chat-message-submit').onclick = function(e) {
         var messageInputDom = document.querySelector('#chat-message-input');
         var message = messageInputDom.value;
-        message += ' username'
+
+        message = '['+user + ']: ' + message
         chatSocket.send(JSON.stringify({
             'message': message,
             'command':'fetch_messages'
@@ -67,4 +82,5 @@
         messageInputDom.value = '';
     };
 </script>
-</html>
+{% endblock content %}
+<!--</html>-->
