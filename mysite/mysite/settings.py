@@ -80,7 +80,6 @@ ASGI_APPLICATION = 'mysite.routing.application'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        # "ROUTING": "chat.routing.channel_routing",
         'CONFIG': {
             "hosts": [('127.0.0.1', 6379)],
         },
@@ -145,4 +144,5 @@ EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = 587
+
 

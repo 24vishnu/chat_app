@@ -3,7 +3,10 @@
 {% block content %}
 
   <form action="{% url 'example:sign_up' %}" method="post">
-    <center>
+    <center style="background-color:
+                    seagreen;
+                    width: 800px;
+                    height: 300px;">
       <h3> This is sign up user page </h3>
     {% csrf_token %}
       <table style="width:500px" >
@@ -19,6 +22,10 @@
         </table>
       <br>
     <button type="submit">Sign up</button>
+      <br>
+      {% for message in messages %}
+        <font color="yellow">{{ message }}</font>
+    {% endfor %}
     </center>
     <hr>
     <p>Already have an account? <a href="{% url 'example:log_in' %}">Log in!</a></p>

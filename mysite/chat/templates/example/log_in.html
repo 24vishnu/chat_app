@@ -15,6 +15,10 @@
         Enter Password <input type="password" placeholder="password" name="password" required><br>
     <br>
     <button type="submit">Login</button>
+    <br>
+    {% for message in messages %}
+        <font color="red">{{ message }}</font>
+    {% endfor %}
     <p>Forgot Password <a href="{% url 'example:reset_password' %}">Reset password</a></p>
   </form>
   <p>Don't have an account? <a href="{% url 'example:sign_up' %}">Sign up!</a></p>
