@@ -110,7 +110,7 @@ pyasn1==0.4.2
 pycparser==2.19
 pycrypto==2.6.1
 pyee==6.0.0
-Pygments==2.2.0
+Pygments==2.7.4
 PyHamcrest==1.9.0
 PyJWT==1.7.1
 pylint==2.3.1
