@@ -98,7 +98,7 @@ paramiko==2.5.0
 pbr==5.4.3
 pexpect==4.2.1
 Pillow==5.1.0
-pipenv==2018.11.26
+pipenv==2022.1.8
 pluggy==0.13.0
 post==2019.4.13
 protobuf==3.0.0
