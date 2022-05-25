@@ -112,7 +112,7 @@ pycrypto==2.6.1
 pyee==6.0.0
 Pygments==2.2.0
 PyHamcrest==1.9.0
-PyJWT==1.7.1
+PyJWT==2.4.0
 pylint==2.3.1
 pymacaroons==0.13.0
 PyNaCl==1.1.2
